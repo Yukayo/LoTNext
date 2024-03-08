@@ -1,0 +1,175 @@
+import torch
+import numpy as np
+from utils import log_string
+from tqdm import tqdm
+
+def update_dict_based_on_flag(flag, my_dict, precision=1):
+    # Define the key ranges
+    # key_ranges = [0, 20, 40, 60, 80, 100, 200, 300, 400]
+
+    key_ranges = [0, 100]
+    
+    # Find the correct key to update based on flag value
+    for i in range(len(key_ranges)):
+        if i ==len(key_ranges)-1:
+           my_dict[key_ranges[i]] += precision
+           break 
+        if key_ranges[i] < flag <= key_ranges[i+1]:
+            my_dict[key_ranges[i]] += precision
+            break
+    return my_dict
+
+class Evaluation:
+    """
+    Handles evaluation on a given POI dataset and loader.
+
+    The two metrics are MAP and recall@n. Our model predicts sequence of
+    next locations determined by the sequence_length at one pass. During evaluation we
+    treat each entry of the sequence as single prediction. One such prediction
+    is the ranked list of all available locations and we can compute the two metrics.
+
+    As a single prediction is of the size of all available locations,
+    evaluation takes its time to compute. The code here is optimized.
+
+    Using the --report_user argument one can access the statistics per user.
+    """
+
+    def __init__(self, dataset, dataloader, user_count, h0_strategy, trainer, setting, log):
+        self.dataset = dataset
+        self.dataloader = dataloader
+        self.user_count = user_count
+        self.h0_strategy = h0_strategy
+        self.trainer = trainer
+        self.setting = setting
+        self._log = log
+
+    def evaluate(self, logits, dataset):
+        self.dataset.reset()
+        h = self.h0_strategy.on_init(self.setting.batch_size, self.setting.device)
+
+        long_tail = 0
+        head = 0
+        num_sam = 0
+
+        with torch.no_grad():
+            iter_cnt = 0
+            recall1 = 0
+            recall5 = 0
+            recall10 = 0
+            average_precision = 0.
+
+            u_iter_cnt = np.zeros(self.user_count)
+            u_recall1 = np.zeros(self.user_count)
+            u_recall5 = np.zeros(self.user_count)
+            u_recall10 = np.zeros(self.user_count)
+            u_average_precision = np.zeros(self.user_count)
+            reset_count = torch.zeros(self.user_count)
+
+            acc_1_dict = {0: 0, 100: 0}
+            mrr_dict = {0: 0, 100: 0}
+            sum_dict = {0: 0, 100: 0}
+
+            # loop = tqdm(self.dataloader, leave=True)
+
+            # for i, (x, t, t_slot, s, y, y_t, y_t_slot, y_s, reset_h, active_users) in enumerate(loop):
+            for i, (x, t, t_slot, s, y, y_t, y_t_slot, y_s, reset_h, active_users, f, y_f) in enumerate(self.dataloader):
+                active_users = active_users.squeeze()
+                for j, reset in enumerate(reset_h):
+                    if reset:
+                        if self.setting.is_lstm:
+                            hc = self.h0_strategy.on_reset_test(active_users[j], self.setting.device)
+                            h[0][0, j] = hc[0]
+                            h[1][0, j] = hc[1]
+                        else:
+                            h[0, j] = self.h0_strategy.on_reset_test(active_users[j], self.setting.device)
+                        reset_count[active_users[j]] += 1
+
+                # squeeze for reasons of "loader-batch-size-is-1"
+                x = x.squeeze().to(self.setting.device)
+                t = t.squeeze().to(self.setting.device)
+                t_slot = t_slot.squeeze().to(self.setting.device)
+                s = s.squeeze().to(self.setting.device)
+
+                y = y.squeeze()
+                y_t = y_t.squeeze().to(self.setting.device)
+                y_t_slot = y_t_slot.squeeze().to(self.setting.device)
+                y_s = y_s.squeeze().to(self.setting.device)
+                active_users = active_users.to(self.setting.device)
+
+                y_f = y_f.squeeze().to(self.setting.device)
+
+                # evaluate:
+                out, h = self.trainer.evaluate(x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_users, f, y_f, dataset)
+
+                for j in range(self.setting.batch_size):
+                    # o contains a per user list of votes for all locations for each sequence entry
+                    o = out[j]
+
+                    # partition elements
+                    o_n = o.cpu().detach().numpy()
+                    ind = np.argpartition(o_n, -10, axis=1)[:, -10:]  # top 10 elements
+
+                    y_j = y[:, j]
+
+                    y_f_j = y_f[:,j]
+
+                    for k in range(len(y_j)):
+                        if reset_count[active_users[j]] > 1:
+                            continue  # skip already evaluated users.
+
+                        # resort indices for k:
+                        ind_k = ind[k]
+                        r = ind_k[np.argsort(-o_n[k, ind_k], axis=0)]  # sort top 10 elements descending
+
+                        r = torch.tensor(r)
+                        t = y_j[k]
+
+                        # compute MAP:
+                        r_kj = o_n[k, :]
+                        t_val = r_kj[t]
+                        upper = np.where(r_kj > t_val)[0]
+                        precision = 1. / (1 + len(upper))
+
+                        if dataset.freq[r[:1].item()]<100 and dataset.freq[r[:1].item()]>=28:
+                            long_tail+=1
+                            num_sam+=1
+                        elif dataset.freq[r[:1].item()]>=100:
+                            head+=1
+                            num_sam+=1
+
+                        if t in r[:1]:
+                            update_dict_based_on_flag(y_f_j[k].item(), acc_1_dict)
+                        update_dict_based_on_flag(y_f_j[k].item(), mrr_dict, precision)
+                        update_dict_based_on_flag(y_f_j[k].item(), sum_dict)
+
+                        # store
+                        u_iter_cnt[active_users[j]] += 1
+                        u_recall1[active_users[j]] += t in r[:1]
+                        u_recall5[active_users[j]] += t in r[:5]
+                        u_recall10[active_users[j]] += t in r[:10]
+                        u_average_precision[active_users[j]] += precision
+
+            formatter = "{0:.8f}"
+            for j in range(self.user_count):
+                iter_cnt += u_iter_cnt[j]
+                recall1 += u_recall1[j]
+                recall5 += u_recall5[j]
+                recall10 += u_recall10[j]
+                average_precision += u_average_precision[j]
+
+                if self.setting.report_user > 0 and (j + 1) % self.setting.report_user == 0:
+                    print('Report user', j, 'preds:', u_iter_cnt[j], 'recall@1',
+                          formatter.format(u_recall1[j] / u_iter_cnt[j]), 'MAP',
+                          formatter.format(u_average_precision[j] / u_iter_cnt[j]), sep='\t')
+
+            # print('recall@1:', formatter.format(recall1 / iter_cnt))
+            # print('recall@5:', formatter.format(recall5 / iter_cnt))
+            # print('recall@10:', formatter.format(recall10 / iter_cnt))
+            # print('MAP', formatter.format(average_precision / iter_cnt))
+            # print('predictions:', iter_cnt)
+
+            log_string(self._log, 'recall@1: ' + formatter.format(recall1 / iter_cnt))
+            log_string(self._log, 'recall@5: ' + formatter.format(recall5 / iter_cnt))
+            log_string(self._log, 'recall@10: ' + formatter.format(recall10 / iter_cnt))
+            log_string(self._log, 'MAP: ' + formatter.format(average_precision / iter_cnt))
+        return recall1 / iter_cnt
