@@ -31,9 +31,9 @@ with open(setting.loader_file, 'rb') as f:
 
 Note: Unzip, you don't need to comment out any codes.
 
-**3. place [Graphs.zip](https://drive.google.com/file/d/1nj916wbuRvSLKPB8ddqktmpVYbkSIa4y/view?usp=sharing) into ./KGE/Graphs/ and unzip the file as following :**
+**3. place [Graphs.zip](https://drive.google.com/file/d/1nj916wbuRvSLKPB8ddqktmpVYbkSIa4y/view?usp=sharing) into ./KGE/POI_graph/ and unzip the file as following :**
 
-./KGE/Graphs/gowalla_scheme2_transe_loc_temporal_100.pkl
+./KGE/POI_graph/gowalla_scheme2_transe_loc_temporal_100.pkl
 
 
 # Model Training
