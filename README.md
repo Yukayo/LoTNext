@@ -11,7 +11,7 @@ conda install pyg -c pyg
 
 **Note: For steps 1 and 2, choose one to execute.**
 
-**1. place [check-in_data.zip](https://drive.google.com/file/d/1QXdpp0_QesJo7NZdhvoafg4MlpI_Bx-O/view?usp=sharing) into ./data/ and unzip the file as following:**
+**1. place [check-in_data.zip](https://drive.google.com/file/d/1WzwP6NFZ3rvSFLy8rXzhuqzM_MgNJFmF/view?usp=sharing) into ./data/ and unzip the file as following:**
 
 ./data/checkins-gowalla.txt
 
@@ -23,7 +23,7 @@ with open(setting.loader_file, 'rb') as f:
     poi_loader = pickle.load(f)
 ```
 
-**2. place [check-in_dataloader.zip](https://drive.google.com/file/d/1QXdpp0_QesJo7NZdhvoafg4MlpI_Bx-O/view?usp=sharing) into ./data/ and unzip the file as following:**
+**2. place [check-in_dataloader.zip](https://drive.google.com/file/d/12yvZ7ClT3klDNI2cqIYyBhpAFV6pQntC/view?usp=sharing) into ./data/ and unzip the file as following:**
 
 ./data/poi_loader-gowalla.pkl
 
@@ -31,7 +31,7 @@ with open(setting.loader_file, 'rb') as f:
 
 Note: Unzip, you don't need to comment out any codes.
 
-**3. place [Graphs.zip](https://drive.google.com/file/d/1KC361Gq-K-0Aw7xu5pyl51YOgMK9JtMb/view?usp=sharing) into ./KGE/Graphs/ and unzip the file as following :**
+**3. place [Graphs.zip](https://drive.google.com/file/d/1nj916wbuRvSLKPB8ddqktmpVYbkSIa4y/view?usp=sharing) into ./KGE/Graphs/ and unzip the file as following :**
 
 ./KGE/Graphs/gowalla_scheme2_transe_loc_temporal_100.pkl
 
