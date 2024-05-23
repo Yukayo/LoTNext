@@ -49,9 +49,9 @@ class Setting:
         # self.poi_embedding_dim = args.poi_embedding_dim
 
         # data management
-        self.dataset_file = './Graph-Flashback/data/{}'.format(args.dataset)
-        self.friend_file = './Graph-Flashback/data/{}'.format(args.friendship)
-        self.loader_file = './Graph-Flashback/data/{}'.format(args.dataloader)
+        self.dataset_file = './data/{}'.format(args.dataset)
+        self.friend_file = './data/{}'.format(args.friendship)
+        self.loader_file = './data/{}'.format(args.dataloader)
         self.max_users = 0  # 0 = use all available users
         self.sequence_length = 20  # 将用户的所有check-in轨迹划分成固定长度为20的多个子轨迹
         self.batch_size = args.batch_size
@@ -139,9 +139,9 @@ class Setting:
                             help='report every x user on evaluation (-1: ignore)')
 
         # log
-        parser.add_argument('--log_file', default='./Graph-Flashback/results/log_gowalla', type=str,
+        parser.add_argument('--log_file', default='./results/log_gowalla', type=str,
                             help='存储结果日志')
-        parser.add_argument('--model_file', default='./Graph-Flashback/model_log/model_gowalla', type=str,
+        parser.add_argument('--model_file', default='./model_log/model_gowalla', type=str,
                             help='存储模型日志')
         parser.add_argument('--trans_loc_file', default='./KGE/POI_graph/gowalla_scheme2_transe_loc_temporal_100.pkl', type=str,
                             help='使用transe方法构造的时间POI转换图')

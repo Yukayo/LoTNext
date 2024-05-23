@@ -136,7 +136,6 @@ timestring = time.strftime('%Y%m%d%H%M%S', time.localtime())
 setting.log_file = setting.log_file + '_' + timestring
 setting.model_files = setting.model_file + '_' + timestring +'.pth'
 log = open(setting.log_file, 'w')
-num_experts = 5
 
 
 
