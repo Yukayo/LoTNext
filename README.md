@@ -17,7 +17,7 @@ conda install pyg -c pyg
 
 ./data/checkins-4sq.txt
 
-Note: These are raw check-in datasets, if you choose this way you need to comment out the code of train.py as follows:
+Note: These are raw check-in datasets, if you choose this way you need to comment out the code of train.py as following:
 ```
 with open(setting.loader_file, 'rb') as f:
     poi_loader = pickle.load(f)
