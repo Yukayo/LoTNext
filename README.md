@@ -11,7 +11,7 @@ conda install pyg -c pyg
 
 **Note: For steps 1 and 2, choose one to execute.**
 
-**1. place [check-in_data.zip](https://drive.google.com/file/d/1WzwP6NFZ3rvSFLy8rXzhuqzM_MgNJFmF/view?usp=sharing) into ./data/ and unzip the file as following:**
+**1. place [check-in_data.zip](https://drive.google.com/file/d/1WzwP6NFZ3rvSFLy8rXzhuqzM_MgNJFmF/view?usp=sharing) into ./data/ and unzip the file as follows:**
 
 ./data/checkins-gowalla.txt
 
