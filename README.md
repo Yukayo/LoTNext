@@ -1,4 +1,4 @@
-# Taming the Long Tail in Human Mobility Prediction
+# [NeurIPS 2024] Taming the Long Tail in Human Mobility Prediction
 ![image](./data/LoTNext.png)
 # Environments
 ```
