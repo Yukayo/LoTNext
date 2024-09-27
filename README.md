@@ -1,5 +1,6 @@
 # [NeurIPS 2024] Taming the Long Tail in Human Mobility Prediction
 ![image](./data/LoTNext.png)
+
 # Environments
 ```
 conda create -n LoTNext python==3.8
@@ -53,5 +54,18 @@ python train.py --dataset checkins-gowalla.txt --dataloader poi_loader-gowalla.p
 Foursquare
 ```
 python train.py --dataset checkins-4sq.txt --dataloader poi_loader-4sq.pkl --trans_loc_file ./KGE/POI_graph/foursquare_scheme2_transe_loc_temporal_20.pkl --trans_interact_file ./KGE/POI_graph/foursquare_scheme2_transe_user-loc_100.pkl --log_file ./results/log_foursquare --model_file ./model_log/model_4sq
+
+```
+
+# Citation
+```bash
+@article{xu2024taming,
+  title={Revisiting Mobility Modeling with Graph: A Graph Transformer Model for Next Point-of-Interest Recommendation},
+  author={Xu, Xiaohang and Jiang, Renhe and Yang, Chuang and Fan, Zipei and Sezaki, Kaoru},
+  journal={Advances in Neural Information Processing Systems},
+  volume={},
+  pages={},
+  year={2024}
+}
 
 ```
