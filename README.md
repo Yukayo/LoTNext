@@ -60,7 +60,7 @@ python train.py --dataset checkins-4sq.txt --dataloader poi_loader-4sq.pkl --tra
 # Citation
 ```
 @article{xu2024taming,
-  title={Revisiting Mobility Modeling with Graph: A Graph Transformer Model for Next Point-of-Interest Recommendation},
+  title={Taming the Long Tail in Human Mobility Prediction},
   author={Xu, Xiaohang and Jiang, Renhe and Yang, Chuang and Fan, Zipei and Sezaki, Kaoru},
   journal={Advances in Neural Information Processing Systems},
   volume={},
