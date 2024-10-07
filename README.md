@@ -13,7 +13,7 @@ Thank you for your interest in our work **LoTNext**, published in the paper *[Ta
 
 ![image](./data/LoTNext.png)
 
-This work is the first to propose a general framework for the next POI prediction under the long-tail problem.
+This work is the **first** to propose a general framework for the next POI prediction under the long-tail problem.
 
 
 # 💻 Environments
@@ -64,12 +64,10 @@ Note: Unzip, you don't need to comment out any codes.
 - Gowalla
 ```
 python train.py --dataset checkins-gowalla.txt --dataloader poi_loader-gowalla.pkl --trans_loc_file ./KGE/POI_graph/gowalla_scheme2_transe_loc_temporal_100.pkl --trans_interact_file ./KGE/POI_graph/gowalla_scheme2_transe_user-loc_100.pkl --log_file ./results/log_gowalla --model_file ./model_log/model_gowalla
-
 ```
 - Foursquare
 ```
 python train.py --dataset checkins-4sq.txt --dataloader poi_loader-4sq.pkl --trans_loc_file ./KGE/POI_graph/foursquare_scheme2_transe_loc_temporal_20.pkl --trans_interact_file ./KGE/POI_graph/foursquare_scheme2_transe_user-loc_100.pkl --log_file ./results/log_foursquare --model_file ./model_log/model_4sq
-
 ```
 
 # :bookmark_tabs: Citation
@@ -84,7 +82,6 @@ If you are interested in our work, please cite it as:
   pages={},
   year={2024}
 }
-
 ```
 If you have any questions, please contact `xhxu@g.ecc.u-tokyo.ac.jp` or publish the new issues. (English, Chinese, and easy Japanese are ok for me :neckbeard:) 
 
