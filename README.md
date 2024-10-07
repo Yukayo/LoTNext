@@ -1,7 +1,7 @@
 # [NeurIPS 2024] Taming the Long Tail in Human Mobility Prediction
 
 <p align="center">
-    <a href="https://arxiv.org/abs/"><img alt="Static Badge" src="https://img.shields.io/badge/PDF-Arxiv-red?style=flat&color=%23FF0000"></a>
+    <a href="https://arxiv.org/abs/"><img alt="Static Badge" src="https://img.shields.io/badge/PDF-Arxiv-red?style=flat&color=%23b12221"></a>
     <a href="https://neurips.cc/"><img alt="Static Badge" src="https://img.shields.io/badge/Pub-NeurIPS24-purple?style=flat&color=purple"></a>
     <a href="https://github.com/"><img alt="Static Badge" src="https://img.shields.io/badge/License-MIT-orange?style=flat"></a>
     <img src="https://badges.toozhao.com/badges/01J9KGYTQ55WHFYGF65E9855BH/blue.svg?style=flat" />
