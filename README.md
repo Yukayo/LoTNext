@@ -1,14 +1,29 @@
 # [NeurIPS 2024] Taming the Long Tail in Human Mobility Prediction
+
+<p align="center">
+    <a href="https://arxiv.org/abs/"><img alt="Static Badge" src="https://img.shields.io/badge/PDF-Arxiv-red?style=flat&color=%23FF0000"></a>
+    <a href="https://neurips.cc/"><img alt="Static Badge" src="https://img.shields.io/badge/Pub-NeurIPS24-purple?style=flat&color=purple"></a>
+    <a href="https://github.com/"><img alt="Static Badge" src="https://img.shields.io/badge/License-MIT-orange?style=flat"></a>
+    <img src="https://badges.toozhao.com/badges/01J9KGYTQ55WHFYGF65E9855BH/blue.svg?style=flat" />
+</p>
+
+# :information_desk_person: Introduction
+
+Thank you for your interest in our work **LoTNext**, published in the paper *[Taming the Long Tail in Human Mobility Prediction](https://arxiv.org/abs/2402.14744)*. 
+
 ![image](./data/LoTNext.png)
 
-# Environments
+This work is the first to propose a general framework for the next POI prediction under the long-tail problem.
+
+
+# 💻 Environments
 ```
 conda create -n LoTNext python==3.8
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
 conda install pyg -c pyg
 ```
 
-# Data Preparation
+# 📂 Data Preparation
 
 **Note: For steps 1 and 2, choose one to execute.**
 
@@ -44,20 +59,22 @@ Note: Unzip, you don't need to comment out any codes.
 ./KGE/POI_graph/gowalla_scheme2_transe_loc_temporal_100.pkl
 
 
-# Model Training
+# ▶️ Model Training
 
-Gowalla
+- Gowalla
 ```
 python train.py --dataset checkins-gowalla.txt --dataloader poi_loader-gowalla.pkl --trans_loc_file ./KGE/POI_graph/gowalla_scheme2_transe_loc_temporal_100.pkl --trans_interact_file ./KGE/POI_graph/gowalla_scheme2_transe_user-loc_100.pkl --log_file ./results/log_gowalla --model_file ./model_log/model_gowalla
 
 ```
-Foursquare
+- Foursquare
 ```
 python train.py --dataset checkins-4sq.txt --dataloader poi_loader-4sq.pkl --trans_loc_file ./KGE/POI_graph/foursquare_scheme2_transe_loc_temporal_20.pkl --trans_interact_file ./KGE/POI_graph/foursquare_scheme2_transe_user-loc_100.pkl --log_file ./results/log_foursquare --model_file ./model_log/model_4sq
 
 ```
 
-# Citation
+# :bookmark_tabs: Citation
+
+If you are interested in our work, please cite it as:
 ```
 @article{xu2024taming,
   title={Taming the Long Tail in Human Mobility Prediction},
@@ -69,3 +86,11 @@ python train.py --dataset checkins-4sq.txt --dataloader poi_loader-4sq.pkl --tra
 }
 
 ```
+If you have any questions, please contact `xhxu@g.ecc.u-tokyo.ac.jp` or publish the new issues. (English, Chinese, and easy Japanese are ok for me :neckbeard:) 
+
+## :couplekiss: Acknowledgement
+
+This work is partly based on [Graph-Flashback](https://github.com/kevin-xuan/Graph-Flashback) and [Flashback](https://github.com/eXascaleInfolab/Flashback_code). We sincerely thank their great works and cite them in the paper. 🙇‍♂️
+
+
+
