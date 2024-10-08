@@ -17,7 +17,7 @@
 [Renhe Jiang](https://scholar.google.com.hk/citations?user=Yo2lwasAAAAJ)<sup>1</sup>,
 [Chuang Yang](https://scholar.google.com.hk/citations?user=Zpk004QAAAAJ)<sup>1</sup>,
 [Zipei Fan](https://scholar.google.com.hk/citations?user=OMny2bEAAAAJ)<sup>1</sup>,
-[Kaoru Sezaki](https://scholar.google.com.hk/citations?user=hXYgAmEAAAAJ)<sup>1</sup>,
+[Kaoru Sezaki](https://scholar.google.com.hk/citations?user=hXYgAmEAAAAJ)<sup>1</sup>
 
 
 <sup>1</sup>The University of Tokyo 
