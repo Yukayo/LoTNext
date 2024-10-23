@@ -7,7 +7,7 @@
 
 <h5 align="center"> 
 
- <a href="https://arxiv.org/abs/"><img alt="Static Badge" src="https://img.shields.io/badge/PDF-Arxiv-red?style=flat&color=%23b12221"></a>
+ <a href="https://arxiv.org/pdf/2410.14970"><img alt="Static Badge" src="https://img.shields.io/badge/PDF-Arxiv-red?style=flat&color=%23b12221"></a>
  <a href="https://neurips.cc/virtual/2024/poster/93152"><img alt="Static Badge" src="https://img.shields.io/badge/Pub-NeurIPS24-purple?style=flat&color=purple"></a>
  <a href="https://github.com/Yukayo/LoTNext/blob/main/LICENSE"><img alt="Static Badge" src="https://img.shields.io/badge/License-MIT-orange?style=flat"></a>
  <img src="https://badges.toozhao.com/badges/01J9KGYTQ55WHFYGF65E9855BH/blue.svg?style=flat" />
