@@ -109,7 +109,7 @@ class MultiHeadAttention(nn.Module):
         if mask is not None:
             seq_len = x.size(-1)
             mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1).bool()
-            mask = mask.unsqueeze(0).unsqueeze(1)  # 形状变为 (1, 1, seq_len, seq_len)
+            mask = mask.unsqueeze(0).unsqueeze(1) 
             mask = mask.expand(batch_size, 1, seq_len, seq_len).to(x.device)
             x = x.masked_fill(mask, -100)
 
