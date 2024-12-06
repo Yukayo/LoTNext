@@ -84,7 +84,7 @@ class MultiHeadAttention(nn.Module):
 
         self.output_layer = nn.Linear(num_heads * att_size, hidden_size)
 
-    def forward(self, q, k, v, attn_bias=None, mask=None):
+    def forward(self, q, k, v, attn_bias=None, mask=True):
         orig_q_size = q.size()
 
         d_k = self.att_size
@@ -107,8 +107,11 @@ class MultiHeadAttention(nn.Module):
         if attn_bias is not None:
             x = x + attn_bias
         if mask is not None:
-            mask = mask.unsqueeze(1)
-            x = x.masked_fill(mask, 0)
+            seq_len = x.size(-1)
+            mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1).bool()
+            mask = mask.unsqueeze(0).unsqueeze(1)  # 形状变为 (1, 1, seq_len, seq_len)
+            mask = mask.expand(batch_size, 1, seq_len, seq_len).to(x.device)
+            x = x.masked_fill(mask, -100)
 
         x = torch.softmax(x, dim=3)
         x = self.att_dropout(x)
