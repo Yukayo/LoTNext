@@ -71,7 +71,7 @@ class FlashbackTrainer():
                                self.lambda_user, self.use_weight, self.graph, self.spatial_graph, self.friend_graph,
                                self.use_graph_user, self.use_spatial_graph, self.interact_graph, setting).to(device)
 
-    def evaluate(self, x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_users, f, y_f, dataset):
+    def evaluate(self, x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_users, f, y_f, dataset, epoch):
         """ takes a batch (users x location sequence)
         then does the prediction and returns a list of user x sequence x location
         describing the probabilities for each location at each position in the sequence.
@@ -83,19 +83,19 @@ class FlashbackTrainer():
         self.model.eval()
         # (seq_len, user_len, loc_count)
         out, h, _, _ = self.model(x, t, t_slot, s, y_t,
-                            y_t_slot, y_s, h, active_users, f, y_f, dataset)
+                            y_t_slot, y_s, h, active_users, f, y_f, dataset, epoch)
 
         out_t = out.transpose(0, 1)
 
         return out_t, h  # model outputs logits
 
-    def loss(self, x, t, t_slot, s, y, y_t, y_t_slot, y_s, h, active_users, f, y_f, logits, dataset):
+    def loss(self, x, t, t_slot, s, y, y_t, y_t_slot, y_s, h, active_users, f, y_f, logits, dataset, epoch):
         """ takes a batch (users x location sequence)
         and corresponding targets in order to compute the training loss """
 
         self.model.train()
         out, h, cos, out_time = self.model(x, t, t_slot, s, y_t, y_t_slot, y_s, h,
-                            active_users, f, y_f, dataset)  # out (seq_len, batch_size, loc_count)
+                            active_users, f, y_f, dataset, epoch)  # out (seq_len, batch_size, loc_count)
         
         out = out.view(-1, self.loc_count)  # (seq_len * batch_size, loc_count)
 
