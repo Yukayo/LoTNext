@@ -67,6 +67,8 @@ class FeedForwardNetwork(nn.Module):
         x = self.layer2(x)
         return x
 
+def mask_value(epoch, T, v_min=-100, v_max=-1e9):
+    return -10 ** ( np.log10(-v_min) + (np.log10(-v_max) - np.log10(-v_min)) * (epoch / T) )
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, hidden_size, attention_dropout_rate, num_heads):
@@ -111,7 +113,8 @@ class MultiHeadAttention(nn.Module):
             mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1).bool()
             mask = mask.unsqueeze(0).unsqueeze(1) 
             mask = mask.expand(batch_size, 1, seq_len, seq_len).to(x.device)
-            x = x.masked_fill(mask, -100)
+            # x = x.masked_fill(mask, -100)
+            x = x.masked_fill(mask, mask_value(current_epoch, 100))
 
         x = torch.softmax(x, dim=3)
         x = self.att_dropout(x)
@@ -145,8 +148,7 @@ class EncoderLayer(nn.Module):
 
     def forward(self, x, attn_bias=None, mask=None):
         # y = self.self_attention_norm(x)
-        # y = self.self_attention(y, y, y, attn_bias, mask=mask)
-        y = self.self_attention(x, x, x, attn_bias, mask=mask)
+        y = self.self_attention(x, x, x, attn_bias, mask=1)
         y = self.self_attention_dropout(y)
         x = x + y
 
