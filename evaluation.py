@@ -43,7 +43,7 @@ class Evaluation:
         self.setting = setting
         self._log = log
 
-    def evaluate(self, logits, dataset):
+    def evaluate(self, logits, dataset, epoch):
         self.dataset.reset()
         h = self.h0_strategy.on_init(self.setting.batch_size, self.setting.device)
 
@@ -99,7 +99,7 @@ class Evaluation:
                 y_f = y_f.squeeze().to(self.setting.device)
 
                 # evaluate:
-                out, h = self.trainer.evaluate(x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_users, f, y_f, dataset)
+                out, h = self.trainer.evaluate(x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_users, f, y_f, dataset, epoch)
 
                 for j in range(self.setting.batch_size):
                     # o contains a per user list of votes for all locations for each sequence entry
