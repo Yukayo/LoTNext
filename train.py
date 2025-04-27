@@ -199,7 +199,7 @@ for e in range(setting.epochs):  # 100
 
         optimizer.zero_grad()
         loss = trainer.loss(x, t, t_slot, s, y, y_t,
-                            y_t_slot, y_s, h, active_users, f, y_f, logits, dataset)
+                            y_t_slot, y_s, h, active_users, f, y_f, logits, dataset, e)
         
 
         loss.backward(retain_graph=True)
@@ -225,7 +225,7 @@ for e in range(setting.epochs):  # 100
     if (e + 1) % setting.validate_epoch == 0:
         log_string(log, f'~~~ Test Set Evaluation (Epoch: {e + 1}) ~~~')
         evl_start = time.time()
-        acc1 = evaluation_test.evaluate(logits, dataset)
+        acc1 = evaluation_test.evaluate(logits, dataset, e)
         if acc1 > best_acc:
             state = {
             'epoch': e,
