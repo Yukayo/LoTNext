@@ -370,7 +370,7 @@ class Flashback(nn.Module):
         self.denoise = DenoisingGCNNet(self.hidden_size, self.hidden_size, self.hidden_size)
 
 
-    def forward(self, x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_user, f, y_f, dataset):
+    def forward(self, x, t, t_slot, s, y_t, y_t_slot, y_s, h, active_user, f, y_f, dataset, epoch):
         seq_len, user_len = x.size()
         x_emb = self.encoder(x)
 
@@ -474,7 +474,7 @@ class Flashback(nn.Module):
         # dist_attn = (haversines(s.transpose(0,1), s.transpose(0,1))).unsqueeze(-1).repeat_interleave(2, dim=-1)
         # dist_attn_fs = self.f_s(dist_attn, user_len).transpose(1, -1)
         # dist_attn_fs = 1/(1+dist_attn).transpose(1, -1)
-        out = self.seq_model(x_emb).to(x.device)
+        out = self.seq_model(x_emb, epoch=epoch).to(x.device)
         # out = self.seq_model(x_emb).to(x.device)
         out_time = self.time_decoder(out).to(x.device).transpose(0,1)
 
