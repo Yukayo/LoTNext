@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import math
+import numpy as np
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len, dropout=0.1):
@@ -86,7 +87,7 @@ class MultiHeadAttention(nn.Module):
 
         self.output_layer = nn.Linear(num_heads * att_size, hidden_size)
 
-    def forward(self, q, k, v, attn_bias=None, mask=True):
+    def forward(self, q, k, v, attn_bias=None, current_epoch=0, mask=True):
         orig_q_size = q.size()
 
         d_k = self.att_size
@@ -146,9 +147,9 @@ class EncoderLayer(nn.Module):
         self.ffn = FeedForwardNetwork(hidden_size, ffn_size, dropout_rate)
         self.ffn_dropout = nn.Dropout(dropout_rate)
 
-    def forward(self, x, attn_bias=None, mask=None):
+    def forward(self, x, attn_bias=None, epoch=0, mask=None):
         # y = self.self_attention_norm(x)
-        y = self.self_attention(x, x, x, attn_bias, mask=1)
+        y = self.self_attention(x, x, x, attn_bias, epoch, mask=1)
         y = self.self_attention_dropout(y)
         x = x + y
 
